@@ -1,18 +1,16 @@
 #include<iostream>
 #include<algorithm>
+#include<numeric>
+using namespace std;
 #define DWARF 9
-int list[DWARF];
-int r1, r2;
+int r1, r2, list[DWARF];
 void solve() {
-        //정렬한 리스트에서 두 값을 제외한 합이 100이 되는 경우 찾기
         //중첩 반복문으로 제외할 두 값 결정
+        //전체 합에서 두 값을 뺐을 때 100이 되는 경우 찾기
+        int sum = accumulate(list, list + DWARF, 0);
         for (int i = 0; i < DWARF; i++) {
-                for (int j = 0; j < DWARF && j != i; j++) {
-                        int sum = 0;
-                        for (int k = 0; k < DWARF; k++) {
-                                if (k != i && k != j) sum += list[k];
-                        }
-                        if (sum == 100) {
+                for (int j = 0; j < DWARF; j++) {
+                        if (sum - list[i] - list[j] == 100) {
                                 r1 = i; r2 = j;
                                 return;
                         }
@@ -20,7 +18,6 @@ void solve() {
         }
 }
 int main() {
-        using namespace std;
         for (int i = 0; i < DWARF; i++)
                 cin >> list[i];
         sort(list, list + DWARF);
