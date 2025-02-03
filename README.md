@@ -30,34 +30,59 @@ Mila_Study
   - Case 1
   ```
   for(int i = 0; i < n; i++)
-  <pre><code>{code}</code></pre>printf("%d", i);
+      printf("%d", i);
   ```
   > i == 0일 때부터 n - 1까지 총 n번 실행
   - Case 2
   ```
   for(int i = 0; i < n / 2; i++)
-  <pre><code>{code}</code></pre>printf("%d", i);
+      printf("%d", i);
   ```
   > 반복문이 n / 2번 실행되고 O(n/2)이지만 상수를 무시하여 O(n)으로 봄
 * O(n^2) : 2차 시간 -> 문제를 해결하기 위한 단계의 수는 입력값 n의 제곱
   > 반복문이 두 번 있는 경우(각 원소를 다른 모든 원소와 비교하는 경우)
   > e.g. 버블 정렬, 선택 정렬, 삽입 정렬
+  ```
+  for(int i = 0; i < n;i++) {
+      for(int j = 0; j < n; j++)
+          printf("%d, %d", i, j);
+  }
+  ```
+  > 반복문이 세 번 중첩되면 O(n^3)
 * O(log n) : 로그 시간 -> 문제를 해결하는데 필요한 단계들이 연산마다 __특정 요인에 의해 줄어듬__  
   > 실행시간이 입력값 크기의 로그에 비례  
   - Case 1
   ```
   int i = 1;
-  while(i < n){
-    i = i * 2;
-  }
+  while(i < n)
+      i = i * 2;
   ```
   > n이 128이면 반복문은 i == 1일 때부터 2, 4, 8, 16, 32, 64까지 총 7번 실행  
   > log 128 == 7
-  - Case 2
+  - Case 2 - 이진탐색
   ```
-  int i = n;
-  while(i > 1){
-    i = i / 2;
+  int left = 0, right = length -1, middle = (left + right) / 2;
+  while(left <= right) {
+      if(list[middle] == key)
+          return list + middle;
+      if(list[middle] > key) //중간값이 key값보다 큰 경우 right를 middle - 1로 변경
+          right = middle - 1;
+      else //중간값이 key값보다 작은 경우 left를 middle + 1로 변경
+          left = middle + 1;
+      middle = (left + right) / 2;
   }
   ```
-  > i == 128일 때부터 64, 32, 16, 8, 4, 2까지 총 7번 실행  
+  > 반복문의 매 시행마다 탐색할 자료의 개수가 절반씩 감소
+  > k번 시행되면 (1 / 2)^k * n개의 자료가 남음
+  >   > 최악의 경우 (1 / 2)^k * n == 1이 될 때까지 탐색을 하게 됨
+  >   > k == log 2 n으로 n에 따라 시행 횟수는 k, 즉 log 2 n
+* O(n log n) : 문제를 해결하기 위한 단계의 수가 n * (log n)번만큼의 수행시간을 가짐
+  > 입력의 절반(또는 일부)으로 나눌 때마다 각 부분을 독립적으로 처리
+  > e.g. 병합 정렬, 퀵 정렬, 힙 정렬
+  ```
+  for(int i = 0; i < n; i++) { //반복횟수 : n에 비례
+      j = 1;
+      while(j < n) //반복횟수: log n에 비례 
+          j = j * 2;
+  }
+  ```
